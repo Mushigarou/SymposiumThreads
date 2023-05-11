@@ -12,8 +12,8 @@ static int	init_data_struct(t_data *data, char **av)
 	data->time_to_eat = ft_atoi_parser(av[3]);
 	if (data->time_to_eat == -1)
 		return (-1);
-	data->time_to_die = ft_atoi_parser(av[4]);
-	if (data->time_to_die == -1)
+	data->time_to_sleep = ft_atoi_parser(av[4]);
+	if (data->time_to_sleep == -1)
 		return (-1);
 	if (av[5])
 	{	
@@ -30,10 +30,8 @@ static int	book_places_around_table_for_dinner(t_philo **head, int nbr_philos)
 
 	i = -1;
 	while (++i < nbr_philos)
-	{
 		if (insert_back(head, create_and_init_philo(i+1)) == -1)
 			return (-1);
-	}
 	return (0);
 }
 

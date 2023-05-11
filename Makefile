@@ -2,7 +2,7 @@ NAME  := philo
 
 CC := cc
 
-CFLAGS := -Wall -Werror -Wextra -fsanitize=address
+CFLAGS := -Wall -Werror -Wextra #-fsanitize=thread #adress
 
 SRC :=	src/main.c \
 		src/utils.c \
