@@ -15,29 +15,16 @@ is optional)"
 
 typedef enum t_states
 {
+	DEAD,
+	HUNGRY,
 	EATING,
 	SLEEPING,
 	THINKING
 }	s_states;
 
-typedef struct s_philo
-{
-	pthread_t				tid;
-	int						philo_id;
-	int						dead_or_alive; // 1 - alive ; 0 - dead
-	int						curr_state;
-	int						last_meal;
-	int						my_fork;// 0 - doesn't have a fork ; 1 - has a fork
-	struct s_philo			*next;
-	struct s_philo			*prev;
-}	t_philo;
-
 typedef struct	s_data
 {
-	t_philo			*philos;
 	pthread_mutex_t print_mtx;
-	pthread_mutex_t fork_mtx;
-	bool			simulation;
 	int				nbr_of_philos;
 	int				time_to_die;
 	int				time_to_eat;
@@ -45,13 +32,21 @@ typedef struct	s_data
 	int				number_of_meals; // -1 means, eat until simulation eventually ends
 }	t_data;
 
-typedef struct s_philo_data
+
+typedef struct s_philo
 {
-	t_data			*data;
-	int				last_meal;
-	struct timeval	start;
-	int				philo_id;
-} t_philo_data;
+	pthread_t				tid;
+	pthread_mutex_t			mtx;
+	int						philo_id;
+	int						dead_or_alive; // 1 - alive ; 0 - dead
+	// int						curr_state;
+	int						left_fork;// 0 - doesn't have a fork ; 1 - has a fork
+	unsigned long			last_meal;
+	struct timeval			start;
+	t_data					*data;
+	struct s_philo			*next;
+	struct s_philo			*prev;
+}	t_philo;
 
 int		init_simulation(t_data *data, char **av);
 void	free_ptr(pthread_t **p);
@@ -72,5 +67,8 @@ t_philo *create_and_init_philo(int content);
 int		insert_back(t_philo **head, t_philo *new_node);
 void	clear_list(t_philo *head, int list_size);
 
+ int right(int i, int n);
+int inline left(int i, int n);
+int	init_philo_data(t_philo *philo, t_data *data, int i);
 
 #endif // PHILOSOPHERS_H
