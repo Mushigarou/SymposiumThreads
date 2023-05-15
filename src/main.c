@@ -16,6 +16,7 @@ void	eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->data->print_mtx);
 	usleep(philo->data->time_to_eat);
 	philo->last_meal = get_time_in_ms(philo->start);
+	philo->nbr_of_meals_taken += 1;
 	return ;
 }
 
@@ -36,11 +37,9 @@ void	pick_forks(t_philo *philo)
 
 	pthread_mutex_lock(&philo->mtx);
 	printf("%lu %d has taken a fork\n", get_time_in_ms(philo->start), philo->philo_id);
-	pthread_mutex_unlock(&philo->mtx);
 
 	pthread_mutex_lock(&philo->prev->mtx);
 	printf("%lu %d has taken a fork\n", get_time_in_ms(philo->start), philo->philo_id);
-	pthread_mutex_unlock(&philo->prev->mtx);
 	return ;
 }
 
@@ -61,6 +60,8 @@ static int	dining_philosophers_routine(t_philo *philo)
 		pick_forks(philo);
 		eat(philo);
 		put_forks(philo);
+		if (philo->nbr_of_meals_taken == philo->data->number_of_meals)
+			break;
 		ft_sleep(philo);
 	}
 	pthread_mutex_destroy(&philo->mtx);
@@ -90,19 +91,15 @@ int	main(int ac, char **av)
 		philo[i].start = start;
 		philo[i].next = &philo[((i + 1) % data.nbr_of_philos)];
 		philo[i].prev = &philo[((i - 1 + data.nbr_of_philos) % data.nbr_of_philos)];
-		if (pthread_create(&philo[i].tid, NULL, (void *)dining_philosophers_routine, &philo[i]) == -1)
+		if (pthread_create(&philo[i].tid, NULL, (void *)dining_philosophers_routine, &philo[i]) != 0)
 			return (-1);
 	}
 	assert(i == data.nbr_of_philos);
-	// t_philo	*grim_reaper;
-	// grim_reaper = data.philos;
 
-	while (1)
-	{
-		//take print_mutex
-		;
-	}
-	pthread_mutex_destroy(&data.print_mtx);
+	i = -1;
+	while(++i < philo->data->nbr_of_philos)
+		if (pthread_join(philo[i].tid, NULL) != 0)
+			write(2, "pthread_join", ft_strlen("pthread_join"));
 	return (0);
 }
 

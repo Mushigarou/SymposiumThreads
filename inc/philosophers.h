@@ -42,6 +42,7 @@ typedef struct s_philo
 	// int						curr_state;
 	int						left_fork;// 0 - doesn't have a fork ; 1 - has a fork
 	unsigned long			last_meal;
+	long					nbr_of_meals_taken;
 	struct timeval			start;
 	t_data					*data;
 	struct s_philo			*next;
