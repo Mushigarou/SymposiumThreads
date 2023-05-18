@@ -4,24 +4,31 @@ static int	init_data_struct(t_data *data, char **av)
 {
 	memset(data, 0, sizeof(t_data));
 	data->nbr_of_philos = ft_atoi_parser(av[1]);
-	if (data->nbr_of_philos == -1)
+	if (data->nbr_of_philos == (unsigned long)-1)
 		return (-1);
 	data->time_to_die = ft_atoi_parser(av[2]);
-	if (data->time_to_die == -1)
+	if (data->time_to_die == (unsigned long)-1)
 		return (-1);
 	data->time_to_eat = ft_atoi_parser(av[3]);
-	if (data->time_to_eat == -1)
+	if (data->time_to_eat == (unsigned long)-1)
 		return (-1);
 	data->time_to_sleep = ft_atoi_parser(av[4]);
-	if (data->time_to_sleep == -1)
+	if (data->time_to_sleep == (unsigned long)-1)
 		return (-1);
 	if (av[5])
 	{	
 		data->number_of_meals = ft_atoi_parser(av[5]);
-		if (data->number_of_meals == -1)
+		if (data->number_of_meals == (unsigned long)-1)
 			return (-1);
 	}
 	return (0);
+}
+
+unsigned long	get_time_in_ms(struct timeval start)
+{
+	struct timeval stop;
+	gettimeofday(&stop, NULL);
+	return (((stop.tv_sec - start.tv_sec) * 1000) + ((stop.tv_usec - start.tv_usec) / 1000));
 }
 
 // static int	book_places_around_table_for_dinner(t_philo **head, int nbr_philos)
