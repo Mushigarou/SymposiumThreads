@@ -6,6 +6,7 @@ CFLAGS := -Wall -Werror -Wextra #-fsanitize=address #adress
 
 SRC :=	src/main.c \
 		src/utils.c \
+		src/routine.c \
 		src/initialize_simulation.c \
 		circular_linked_list/create_node.c \
 		circular_linked_list/insert_back.c \
