@@ -93,6 +93,13 @@ void	ft_itoa(char *buff, int x)
 	return ;
 }
 
+unsigned long	get_time_in_ms(struct timeval start)
+{
+	struct timeval stop;
+	gettimeofday(&stop, NULL);
+	return (((stop.tv_sec - start.tv_sec) * 1000) + ((stop.tv_usec - start.tv_usec) / 1000));
+}
+
 size_t	ft_strlcpy(char *dst, char *src, size_t	dstsize)
 {	
 	size_t	i;
