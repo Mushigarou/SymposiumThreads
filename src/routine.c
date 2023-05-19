@@ -48,6 +48,8 @@ void	ft_sleep(t_philo *philo)
 
 int	pick_forks(t_philo *philo)
 {
+	unsigned long	start_time;
+
 	pthread_mutex_lock(&philo->data->data_mtx);
 	if (philo->prev->fork)
 	{
@@ -56,6 +58,11 @@ int	pick_forks(t_philo *philo)
 	}
 	else
 	{
+		start_time = get_time_in_ms(philo->start);
+		while (((get_time_in_ms(philo->start) - start_time)
+			< philo->data->time_to_die +1))
+			usleep(100);
+		// philo->data->death_id = philo->philo_id;
 		pthread_mutex_unlock(&philo->data->data_mtx);
 		return (-1);
 	}
