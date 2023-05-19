@@ -84,5 +84,6 @@ void	eat(t_philo *philo);
 void	ft_sleep(t_philo *philo);
 int		pick_forks(t_philo *philo);
 void	put_forks(t_philo *philo);
+void	grim_reaper(t_data *data);
 
 #endif // PHILOSOPHERS_H
