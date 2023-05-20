@@ -17,9 +17,9 @@ void	free_ptr(pthread_t **p)
 	free(p);
 }
 
-int	ft_atoi_parser(char *s)
+unsigned long	ft_atoi_parser(char *s)
 {
-	int res = 0;
+	unsigned long res = 0;
 
 	if (s[0] == '-')
 		return (-1);
@@ -30,6 +30,8 @@ int	ft_atoi_parser(char *s)
 		if (ft_isdigit(*s) == 0)
 			return (-1);
 		res = res * 10 + *s++ - '0';
+		if (res > INT32_MAX)
+			return (-1);
 	}
 	return (res);
 }

@@ -4,7 +4,8 @@ static int	init_data_struct(t_data *data, char **av)
 {
 	memset(data, 0, sizeof(t_data));
 	data->nbr_of_philos = ft_atoi_parser(av[1]);
-	if (data->nbr_of_philos == (unsigned long)-1)
+	if (data->nbr_of_philos == (unsigned long)-1 || data->nbr_of_philos == 0
+		|| data->nbr_of_philos > 200)
 		return (-1);
 	data->time_to_die = ft_atoi_parser(av[2]);
 	if (data->time_to_die == (unsigned long)-1)
