@@ -97,10 +97,7 @@ void	grim_reaper(t_data *data)
 			data->death_id = data->philo_head->philo_id;
 			while (i < data->nbr_of_philos)
 			{
-				pthread_mutex_lock(&data->philo_head->death_mtx);
-				data->philo_head->dead_or_alive = 0;
-				pthread_mutex_unlock(&data->philo_head->death_mtx);
-				data->philo_head = data->philo_head->next;
+				take_philo_soul(&data);
 				i++;
 			}
 			return ;

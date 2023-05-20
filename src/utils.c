@@ -19,7 +19,7 @@ unsigned long	ft_atoi_parser(char *s)
 		if (ft_isdigit(*s) == 0)
 			return (-1);
 		res = res * 10 + *s++ - '0';
-		if (res > INT32_MAX)
+		if (res > INT64_MAX)
 			return (-1);
 	}
 	return (res);
