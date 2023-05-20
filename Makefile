@@ -2,15 +2,12 @@ NAME  := philo
 
 CC := cc
 
-CFLAGS := -Wall -Werror -Wextra #-fsanitize=thread #adress
+CFLAGS := -Wall -Werror -Wextra -fsanitize=thread #adress
 
 SRC :=	src/main.c \
 		src/utils.c \
 		src/routine.c \
 		src/initialize_simulation.c \
-		circular_linked_list/create_node.c \
-		circular_linked_list/insert_back.c \
-		circular_linked_list/clear_list.c \
 		
 
 OBJ_DIR := obj

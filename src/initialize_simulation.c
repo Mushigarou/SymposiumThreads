@@ -25,17 +25,6 @@ static int	init_data_struct(t_data *data, char **av)
 	return (0);
 }
 
-// static int	book_places_around_table_for_dinner(t_philo **head, int nbr_philos)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (++i < nbr_philos)
-// 		if (insert_back(head, create_and_init_philo(i+1)) == -1)
-// 			return (-1);
-// 	return (0);
-// }
-
 int	init_simulation(t_data *data, char **av)
 {
 	int	err;
@@ -44,9 +33,6 @@ int	init_simulation(t_data *data, char **av)
 	err = init_data_struct(data, av);
 	if (err == -1)
 		return (-1);
-	// err = book_places_around_table_for_dinner(&data->philos, data->nbr_of_philos);
-	// if (err == -1)
-	// 	return (-1);
 	return (0);
 }
 

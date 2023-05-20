@@ -1,16 +1,16 @@
 #include "philosophers.h"
 
-
 void	eat(t_philo *philo)
 {
+	unsigned long	start_time;
+
 	pthread_mutex_lock(&philo->data->print_mtx);
 	printf("%lu	%lu is eating\n", get_time_in_ms(philo->start), philo->philo_id);
 	pthread_mutex_unlock(&philo->data->print_mtx);
-
-	unsigned long start_time = get_time_in_ms(philo->start);
+	start_time = get_time_in_ms(philo->start);
 	pthread_mutex_lock(&philo->death_mtx);
-	while (((get_time_in_ms(philo->start) - start_time) < philo->data->time_to_eat)
-		&& (philo->dead_or_alive == 1))
+	while (((get_time_in_ms(philo->start) - start_time)
+			< philo->data->time_to_eat) && (philo->dead_or_alive == 1))
 	{
 		pthread_mutex_unlock(&philo->death_mtx);
 		usleep(100);
@@ -18,22 +18,22 @@ void	eat(t_philo *philo)
 	}
 	philo->last_meal = get_time_in_ms(philo->start);
 	pthread_mutex_unlock(&philo->death_mtx);
-
 	philo->nbr_of_meals_taken += 1;
 	return ;
 }
 
 void	ft_sleep(t_philo *philo)
 {
+	unsigned long	start_time;
+
 	pthread_mutex_lock(&philo->data->print_mtx);
-	printf("%lu	%lu is sleeping\n", get_time_in_ms(philo->start), philo->philo_id);
+	printf("%lu	%lu is sleeping\n", get_time_in_ms(philo->start),
+		philo->philo_id);
 	pthread_mutex_unlock(&philo->data->print_mtx);
-	
-	unsigned long	start_time = get_time_in_ms(philo->start);
-	
+	start_time = get_time_in_ms(philo->start);
 	pthread_mutex_lock(&philo->death_mtx);
-	while (((get_time_in_ms(philo->start) - start_time) < philo->data->time_to_sleep)
-	&& (philo->dead_or_alive == 1))
+	while (((get_time_in_ms(philo->start) - start_time)
+			< philo->data->time_to_sleep) && (philo->dead_or_alive == 1))
 	{
 		pthread_mutex_unlock(&philo->death_mtx);
 		usleep(100);
@@ -41,7 +41,8 @@ void	ft_sleep(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->death_mtx);
 	pthread_mutex_lock(&philo->data->print_mtx);
-	printf("%lu	%lu is thinking\n", get_time_in_ms(philo->start), philo->philo_id);
+	printf("%lu	%lu is thinking\n", get_time_in_ms(philo->start),
+		philo->philo_id);
 	pthread_mutex_unlock(&philo->data->print_mtx);
 	return ;
 }
@@ -54,23 +55,22 @@ int	pick_forks(t_philo *philo)
 	if (philo->prev->fork)
 	{
 		pthread_mutex_lock(&philo->prev->mtx);
-		printf("%lu	%lu has taken a fork\n", get_time_in_ms(philo->start), philo->philo_id);
+		printf("%lu	%lu has taken a fork\n", get_time_in_ms(philo->start),
+			philo->philo_id);
 	}
 	else
 	{
 		start_time = get_time_in_ms(philo->start);
 		while (((get_time_in_ms(philo->start) - start_time)
-			< philo->data->time_to_die +1))
+				< philo->data->time_to_die +1))
 			usleep(100);
-		// philo->data->death_id = philo->philo_id;
 		pthread_mutex_unlock(&philo->data->data_mtx);
 		return (-1);
 	}
 	pthread_mutex_unlock(&philo->data->data_mtx);
-
 	pthread_mutex_lock(&philo->mtx);
-	printf("%lu	%lu has taken a fork\n", get_time_in_ms(philo->start), philo->philo_id);
-
+	printf("%lu	%lu has taken a fork\n", get_time_in_ms(philo->start),
+		philo->philo_id);
 	return (0);
 }
 
@@ -83,13 +83,15 @@ void	put_forks(t_philo *philo)
 
 void	grim_reaper(t_data *data)
 {
-	unsigned long	i = 0;
+	unsigned long	i;
 
+	i = 0;
 	while (1 && data->simulation)
 	{
 		usleep(900);
 		pthread_mutex_lock(&data->philo_head->death_mtx);
-		if ((get_time_in_ms(data->start) - data->philo_head->last_meal) > data->time_to_die)
+		if ((get_time_in_ms(data->start) - data->philo_head->last_meal)
+			> data->time_to_die)
 		{
 			pthread_mutex_unlock(&data->philo_head->death_mtx);
 			data->death_id = data->philo_head->philo_id;
@@ -101,7 +103,7 @@ void	grim_reaper(t_data *data)
 				data->philo_head = data->philo_head->next;
 				i++;
 			}
-			return;
+			return ;
 		}
 		pthread_mutex_unlock(&data->philo_head->death_mtx);
 		data->philo_head = data->philo_head->next;
