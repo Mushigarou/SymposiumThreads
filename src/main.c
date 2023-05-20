@@ -1,12 +1,13 @@
 #include <philosophers.h>
 #define MAX_THREADS 2100
-// #define NDEBUG
 // ./philo 5 800 200 200 no one sould die (285123 ms)
 // ./philo 4 410 200 200 (346800 ms)
 // ./philo 5 310 200 200 (die at time)
 // ./philo 2 310 200 200 (consistent delay of 1 - 4ms)
 // .philo 5 800 200 200 7
 
+//	if philo id is in an odd place, he wait time_to_eat. else, if he is
+// in an even position they quit function
 void	synchronize_access(t_philo *philo)
 {
 	unsigned long	start_time;
@@ -19,7 +20,7 @@ void	synchronize_access(t_philo *philo)
 			pthread_mutex_lock(&philo->death_mtx);
 			while (((get_time_in_ms(philo->start) - start_time)
 					< philo->data->time_to_eat)
-				&& (philo->dead_or_alive == ALIVE))
+				&& (philo->status == ALIVE))
 			{
 				pthread_mutex_unlock(&philo->death_mtx);
 				usleep(100);
@@ -31,6 +32,8 @@ void	synchronize_access(t_philo *philo)
 	return ;
 }
 
+//	Init mutexes then entering philosophers life routine. in case something
+//	happenned destroy mutexes
 static void	dining_philosophers_routine(t_philo *philo)
 {
 	pthread_mutex_init(&philo->mtx, NULL);
@@ -39,7 +42,7 @@ static void	dining_philosophers_routine(t_philo *philo)
 	while (1)
 	{
 		pthread_mutex_lock(&philo->death_mtx);
-		if (philo->dead_or_alive == 0)
+		if (philo->status == DEAD)
 			break ;
 		pthread_mutex_unlock(&philo->death_mtx);
 		if (pick_forks(philo) == -1)
@@ -47,7 +50,7 @@ static void	dining_philosophers_routine(t_philo *philo)
 		eat(philo);
 		put_forks(philo);
 		pthread_mutex_lock(&philo->death_mtx);
-		if (philo->dead_or_alive == 0)
+		if (philo->status == DEAD)
 			break ;
 		pthread_mutex_unlock(&philo->death_mtx);
 		ft_sleep(philo);
@@ -59,6 +62,7 @@ static void	dining_philosophers_routine(t_philo *philo)
 	return ;
 }
 
+//	Init mutexes and create threads
 int	start_simulation(t_data *data, t_philo philo[], struct timeval *start)
 {
 	unsigned long	i;
@@ -82,6 +86,7 @@ int	start_simulation(t_data *data, t_philo philo[], struct timeval *start)
 	return (0);
 }
 
+// printf death of a philo if it happenned, and destroy mutexes
 void	end_simulation(t_data *data)
 {
 	if (data->death_id != 0)
@@ -102,9 +107,10 @@ int	main(int ac, char **av)
 
 	if (ac <= 4 || ac > 6)
 		return (print_err(PROGRAM_ARGUMENTS_PROTOTYPE, 1));
-	if (init_simulation(&data, av) == -1)
+	if (init_data_struct(&data, av) == -1)
 		return (print_err(ARGUMENT_ERROR, 1));
-	start_simulation(&data, philo, &start);
+	if (start_simulation(&data, philo, &start) != 0)
+		return (2);
 	data.philo_head = &philo[0];
 	data.start = start;
 	if (pthread_create(&grim, NULL, (void *)grim_reaper, &data))

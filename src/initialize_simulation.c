@@ -1,6 +1,7 @@
 #include "philosophers.h"
 
-static int	init_data_struct(t_data *data, char **av)
+//	parse and store given arguments in data struct
+int	init_data_struct(t_data *data, char **av)
 {
 	memset(data, 0, sizeof(t_data));
 	data->nbr_of_philos = ft_atoi_parser(av[1]);
@@ -25,22 +26,12 @@ static int	init_data_struct(t_data *data, char **av)
 	return (0);
 }
 
-int	init_simulation(t_data *data, char **av)
-{
-	int	err;
-
-	err = 0;
-	err = init_data_struct(data, av);
-	if (err == -1)
-		return (-1);
-	return (0);
-}
-
+//	Initialize variable in data struct
 int	init_philo_data(t_philo *philo, t_data *data, int i)
 {
 	philo->data = data;
 	philo->philo_id = i + 1;
-	philo->dead_or_alive = 1;
+	philo->status = ALIVE;
 	pthread_mutex_lock(&data->data_mtx);
 	if (data->nbr_of_philos < 2)
 		philo->fork = 0;
@@ -50,10 +41,11 @@ int	init_philo_data(t_philo *philo, t_data *data, int i)
 	return (0);
 }
 
+//	kills the philo pointed to by "data->philo->head"
 void	take_philo_soul(t_data **data)
 {
 	pthread_mutex_lock(&(*data)->philo_head->death_mtx);
-	(*data)->philo_head->dead_or_alive = 0;
+	(*data)->philo_head->status = DEAD;
 	pthread_mutex_unlock(&(*data)->philo_head->death_mtx);
 	(*data)->philo_head = (*data)->philo_head->next;
 }
