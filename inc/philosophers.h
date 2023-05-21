@@ -81,6 +81,6 @@ void			eat(t_philo *philo);
 void			ft_sleep(t_philo *philo);
 void			put_forks(t_philo *philo);
 void			grim_reaper(t_data *data);
-void			take_philo_soul(t_data **data);
+void			take_philos_souls(t_data **data);
 
 #endif // PHILOSOPHERS_H

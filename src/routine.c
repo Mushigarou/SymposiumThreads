@@ -83,11 +83,10 @@ void	put_forks(t_philo *philo)
 
 void	grim_reaper(t_data *data)
 {
-	unsigned long	i;
-
-	i = -1;
+	pthread_mutex_lock(&data->data_mtx);
 	while (1 && data->simulation)
 	{
+		pthread_mutex_unlock(&data->data_mtx);
 		usleep(900);
 		pthread_mutex_lock(&data->philo_head->death_mtx);
 		if ((get_time_in_ms(data->start) - data->philo_head->last_meal)
@@ -95,12 +94,13 @@ void	grim_reaper(t_data *data)
 		{
 			pthread_mutex_unlock(&data->philo_head->death_mtx);
 			data->death_id = data->philo_head->philo_id;
-			while (++i < data->nbr_of_philos)
-				take_philo_soul(&data);
+			take_philos_souls(&data);
 			return ;
 		}
 		pthread_mutex_unlock(&data->philo_head->death_mtx);
 		data->philo_head = data->philo_head->next;
+		pthread_mutex_lock(&data->data_mtx);
 	}
+	pthread_mutex_unlock(&data->data_mtx);
 	return ;
 }
