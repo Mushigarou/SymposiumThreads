@@ -23,11 +23,11 @@ RM := rm -rf
 all : $(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC) $(CFLAGS) $^ -o $(NAME) 
+	@$(CC) $(CFLAGS) $^ -o $(NAME) 
 
 $(OBJ_DIR)/%.o : %.c $(HEADERS_FILE)
-	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -I$(HEADERS_DIR) -c $< -o $@
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -I$(HEADERS_DIR) -c $< -o $@
 
 clean :
 	$(RM) $(OBJ_DIR)
@@ -39,4 +39,4 @@ re : fclean all
 
 .PHONY : all clean fclean re
 
-# .SILENT : re fclean clean all
+.SILENT : re fclean clean all

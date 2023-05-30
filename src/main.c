@@ -127,9 +127,9 @@ int	main(int ac, char **av)
 	while (++i < data.nbr_of_philos)
 		if (pthread_join(philo[i].tid, NULL) != 0)
 			return (write(2, "pthread_join", ft_strlen("pthread_join")), 2);
-	pthread_mutex_lock(&data.data_mtx);
+	// pthread_mutex_lock(&data.data_mtx);
 	data.simulation = 0;
-	pthread_mutex_unlock(&data.data_mtx);
+	// pthread_mutex_unlock(&data.data_mtx);
 	end_simulation(&data, grim);
 	return (0);
 }
