@@ -1,7 +1,7 @@
-# The dining philosopher's problem
-![shapes-1](https://github.com/Mushigarou/Philosophers/assets/115739322/2c538004-ddde-428e-a1ae-bde719fe3737)
+# SymposiumThreads: the dining philosophers problem
+![shapes-1](https://github.com/Mushigarou/SymposiumThreads/assets/115739322/2c538004-ddde-428e-a1ae-bde719fe3737)
 
-# Overview :
+## Overview :
 - One or more philosophers sit at a round table.
 There is a large bowl of spaghetti in the middle of the table.
 - The philosophers alternatively eat, think, or sleep.
@@ -18,7 +18,15 @@ a philosopher dies of starvation.
 - Philosophers don’t speak with each other.
 - Philosophers don’t know if another philosopher is about to die.
 
-# Rules :
+## Usage :
+
+```
+$> git clone https://github.com/Mushigarou/SymposiumThreads.git
+$> cd SymposiumThreads
+$> make
+$./philo 5 800 200 200
+```
+## Rules :
 The program should take the following arguments:
 ```
 $> ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
@@ -42,4 +50,11 @@ pher number N + 1.
 - A message announcing a philosopher died should be displayed no more than 10 ms
 after the actual death of the philosopher.
 
-![Eating](https://github.com/Mushigarou/Philosophers/assets/115739322/cef600c6-d5e7-4776-9e25-655f0047d614)
+![Eating](https://github.com/Mushigarou/SymposiumThreads/assets/115739322/cef600c6-d5e7-4776-9e25-655f0047d614)
+
+## Contributing
+
+Contributions to this project are welcome! If you find any issues or have improvements to suggest, please feel free to submit a pull request.
+## License
+
+This project is licensed under the MIT license
